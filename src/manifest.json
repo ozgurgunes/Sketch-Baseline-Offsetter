@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sketch-hq/SketchAPI/develop/docs/sketch-plugin-manifest-schema.json",
+  "name": "Baseline Offsetter",
+  "identifier": "com.gunesozgur.sketch.baseline-offsetter",
+  "description": "Raise, lower, set or reset the baseline of multiple text layers with a single command.",
+  "author": "Ozgur Gunes",
+  "authorEmail": "o.gunes@gmail.com",
+  "appcast": "https://raw.githubusercontent.com/ozgurgunes/Sketch-Baseline-Offsetter/master/.appcast.xml",
+  "homepage": "https://github.com/ozgurgunes/Sketch-Baseline-Offsetter",
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "Set Baseline Offset",
+      "description": "Gets the input from user and applies the given offset to all selected text layers.",
+      "identifier": "baseline-offsetter.set-baseline-offset",
+      "script": "./command.js",
+      "handler": "setBaselineOffset"
+    },
+    {
+      "name": "Raise Baseline",
+      "description": "Increases the current baseline offset of selected text layers by `1`.",
+      "identifier": "baseline-offsetter.raise-baseline",
+      "script": "./command.js",
+      "handler": "raiseBaseline"
+    },
+    {
+      "name": "Lower Baseline",
+      "description": "Decreases the current baseline offset of selected text layers by `1`.",
+      "identifier": "baseline-offsetter.lower-baseline",
+      "script": "./command.js",
+      "handler": "lowerBaseline"
+    },
+    {
+      "name": "Use Default Baseline",
+      "description": "Removes any baseline offset value from selected text layers, resets them to their default.",
+      "identifier": "baseline-offsetter.use-default-baseline",
+      "script": "./command.js",
+      "handler": "useDefaultBaseline"
+    }
+  ],
+  "menu": {
+    "title": "Baseline Offsetter",
+    "items": [
+      "baseline-offsetter.set-baseline-offset",
+      "-",
+      "baseline-offsetter.raise-baseline",
+      "baseline-offsetter.lower-baseline",
+      "-",
+      "baseline-offsetter.use-default-baseline"
+    ]
+  }
+}

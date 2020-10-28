@@ -1,0 +1,21 @@
+{
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+      "eslint:recommended", 
+      "prettier", 
+      "sketch"],
+    "globals": {
+        "NSBaselineOffsetAttributeName": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": ["prettier"],
+    "rules": {
+      "no-console": "off"
+    }
+}
