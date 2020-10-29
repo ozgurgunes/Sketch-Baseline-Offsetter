@@ -8,105 +8,91 @@ import {
 } from '@ozgurgunes/sketch-plugin-ui'
 
 export function setBaselineOffset() {
-  try {
-    let selection = getSelection()
-    let message =
-      '- Positive (+) values to raise. \n' + 
-      '- Negative (-) values to lower. \n' +
-      "- 0 (zero) to reset."
-    let buttons = ['Set', 'Cancel']
-    let accessory = textField(0)
-    let response = alert(message, buttons, accessory).runModal()
-    let value = accessory.stringValue()
-    if (response === 1000) {
-      if (!Number(value) && value != 0) {
-        return alert('Please enter a number.').runModal()
-      }
-      console.log(value)
-      selection.forEach(layer => {
-        layer.sketchObject.addAttribute_value_forRange(
-          NSBaselineOffsetAttributeName,
-          Number(value) || null,
-          NSMakeRange(0, layer.text.length)
-        )
-      })
-      analytics(null, selection.length)
-      if (value == 0) {
-        successMessage(
-          `${selection.length} text layer${getPlural(
-            selection
-          )} baseline reset to default.`
-        )
-      } else {
-        successMessage(
-          `${selection.length} text layer${getPlural(
-            selection
-          )} baseline offset set to ${value}.`
-        )
-      }
-    }
-  } catch (e) {
-    console.log(e)
+  let selection = getSelection()
+  if (!selection) return
+  let message =
+    '- Positive (+) values to raise. \n' +
+    '- Negative (-) values to lower. \n' +
+    '- 0 (zero) to reset.'
+  let buttons = ['Set', 'Cancel']
+  let accessory = textField(0)
+  let response = alert(message, buttons, accessory).runModal()
+  let value = accessory.stringValue()
+  if (response === 1001) return
+  if (!Number(value) && value != 0) {
+    return alert('Please enter a number.').runModal()
   }
-}
-
-export function raiseBaseline() {
-  try {
-    let selection = getSelection()
-    selection.forEach(layer => {
-      layer.sketchObject.addAttribute_value_forRange(
-        NSBaselineOffsetAttributeName,
-        (layer.sketchObject.styleAttributes().NSBaselineOffset || 0) + 1,
-        NSMakeRange(0, layer.text.length)
-      )
-    })
-    analytics(null, selection.length)
-    successMessage(
-      `${selection.length} text layer${getPlural(selection)} baseline raised.`
+  selection.forEach(layer => {
+    layer.sketchObject.addAttribute_value_forRange(
+      NSBaselineOffsetAttributeName,
+      Number(value) || null,
+      NSMakeRange(0, layer.text.length)
     )
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export function lowerBaseline() {
-  try {
-    let selection = getSelection()
-    selection.forEach(layer => {
-      layer.sketchObject.addAttribute_value_forRange(
-        NSBaselineOffsetAttributeName,
-        (layer.sketchObject.styleAttributes().NSBaselineOffset || 0) - 1,
-        NSMakeRange(0, layer.text.length)
-      )
-    })
-    analytics(null, selection.length)
-    successMessage(
-      `${selection.length} text layer${getPlural(selection)} baseline lowered.`
-    )
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export function useDefaultBaseline() {
-  try {
-    let selection = getSelection()
-    selection.forEach(layer => {
-      layer.sketchObject.addAttribute_value_forRange(
-        NSBaselineOffsetAttributeName,
-        null,
-        NSMakeRange(0, layer.text.length)
-      )
-    })
-    analytics(null, selection.length)
+  })
+  analytics(null, selection.length)
+  if (value == 0) {
     successMessage(
       `${selection.length} text layer${getPlural(
         selection
       )} baseline reset to default.`
     )
-  } catch (e) {
-    console.log(e)
+  } else {
+    successMessage(
+      `${selection.length} text layer${getPlural(
+        selection
+      )} baseline offset set to ${value}.`
+    )
   }
+}
+
+export function raiseBaseline() {
+  let selection = getSelection()
+  if (!selection) return
+  selection.forEach(layer => {
+    layer.sketchObject.addAttribute_value_forRange(
+      NSBaselineOffsetAttributeName,
+      (layer.sketchObject.styleAttributes().NSBaselineOffset || 0) + 1,
+      NSMakeRange(0, layer.text.length)
+    )
+  })
+  analytics(null, selection.length)
+  successMessage(
+    `${selection.length} text layer${getPlural(selection)} baseline raised.`
+  )
+}
+
+export function lowerBaseline() {
+  let selection = getSelection()
+  if (!selection) return
+  selection.forEach(layer => {
+    layer.sketchObject.addAttribute_value_forRange(
+      NSBaselineOffsetAttributeName,
+      (layer.sketchObject.styleAttributes().NSBaselineOffset || 0) - 1,
+      NSMakeRange(0, layer.text.length)
+    )
+  })
+  analytics(null, selection.length)
+  successMessage(
+    `${selection.length} text layer${getPlural(selection)} baseline lowered.`
+  )
+}
+
+export function useDefaultBaseline() {
+  let selection = getSelection()
+  if (!selection) return
+  selection.forEach(layer => {
+    layer.sketchObject.addAttribute_value_forRange(
+      NSBaselineOffsetAttributeName,
+      null,
+      NSMakeRange(0, layer.text.length)
+    )
+  })
+  analytics(null, selection.length)
+  successMessage(
+    `${selection.length} text layer${getPlural(
+      selection
+    )} baseline reset to default.`
+  )
 }
 
 function getPlural(selection) {
@@ -119,8 +105,7 @@ function getSelection() {
     .selectedLayers.layers.filter(layer => layer.type == sketch.Types.Text)
   if (selection.length < 1) {
     analytics('Selection Error')
-    errorMessage('Please select text layers.')
-    throw 'No selection!'
+    return errorMessage('Please select text layers.')
   }
   return selection
 }
