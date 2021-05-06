@@ -1,6 +1,7 @@
 import sketch from 'sketch'
 import analytics from '@ozgurgunes/sketch-plugin-analytics'
 import {
+  showMessage,
   errorMessage,
   successMessage,
   alert,
@@ -94,6 +95,18 @@ export function useDefaultBaseline() {
     )} baseline reset to default.`
   )
 }
+
+export function showBaseline() {
+  let selection = getSelection()
+  if (!selection) return
+  if (selection.length > 1) {
+    analytics('Selection Error')
+    return errorMessage('Please select 1 text layer only.')
+  }
+  analytics(null, selection.length)
+  showMessage(selection[0].sketchObject.styleAttributes().NSBaselineOffset || 0)
+}
+
 
 function getPlural(selection) {
   return selection.length == 1 ? "'s" : "s'"

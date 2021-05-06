@@ -36,6 +36,13 @@
       "identifier": "baseline-offsetter.use-default-baseline",
       "script": "./command.js",
       "handler": "useDefaultBaseline"
+    },
+    {
+      "name": "Show Baseline Offset",
+      "description": "Displays current baseline offset of selected text layer.",
+      "identifier": "baseline-offsetter.show-baseline",
+      "script": "./command.js",
+      "handler": "showBaseline"
     }
   ],
   "menu": {
@@ -46,7 +53,9 @@
       "baseline-offsetter.raise-baseline",
       "baseline-offsetter.lower-baseline",
       "-",
-      "baseline-offsetter.use-default-baseline"
+      "baseline-offsetter.use-default-baseline",
+      "-",
+      "baseline-offsetter.show-baseline"
     ]
   }
 }
